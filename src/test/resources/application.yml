@@ -1,0 +1,3 @@
+jwt:
+  secret: "test-icin-cok-gizli-ve-uzun-bir-anahtar-koyalim-buraya-en-az-256-bit-olmali"
+  expiration-ms: 86400000
