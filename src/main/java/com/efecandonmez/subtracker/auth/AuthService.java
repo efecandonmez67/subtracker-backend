@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.efecandonmez.subtracker.common.exception.DuplicateResourceException;
 import com.efecandonmez.subtracker.common.exception.InvalidCredentialsException;
 
+import java.util.UUID;
+
 @Service
 public class AuthService {
 
@@ -44,8 +46,8 @@ public class AuthService {
         return buildResponse(user);
     }
 
-    public void updateFcmToken(String email, String fcmToken) {
-        User user = userRepository.findByEmail(email)
+    public void updateFcmToken(UUID userId, String fcmToken) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Kullanıcı bulunamadı"));
         user.setFcmToken(fcmToken);
         userRepository.save(user);

@@ -48,6 +48,15 @@ public class JwtService {
                 .getSubject();
     }
 
+    public String extractUserId(String token) {
+        return Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("userId", String.class);
+    }
+
     public boolean isValid(String token) {
         try {
             Jwts.parser().verifyWith(key).build().parseSignedClaims(token);

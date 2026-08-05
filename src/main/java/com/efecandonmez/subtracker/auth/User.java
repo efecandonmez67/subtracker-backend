@@ -1,11 +1,17 @@
 package com.efecandonmez.subtracker.auth;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.Instant;
 import java.util.UUID;
 
 @Entity
 @Table(name = "users")
+@Getter
+@NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 public class User {
 
     @Id
@@ -18,6 +24,7 @@ public class User {
     @Column(nullable = false)
     private String passwordHash;
 
+    @Setter
     private String fcmToken;
 
     @Column(nullable = false, updatable = false)
@@ -28,17 +35,8 @@ public class User {
         this.createdAt = Instant.now();
     }
 
-    protected User() {}
-
     public User(String email, String passwordHash) {
         this.email = email;
         this.passwordHash = passwordHash;
     }
-
-    public UUID getId() { return id; }
-    public String getEmail() { return email; }
-    public String getPasswordHash() { return passwordHash; }
-    public String getFcmToken() { return fcmToken; }
-    public void setFcmToken(String fcmToken) { this.fcmToken = fcmToken; }
-    public Instant getCreatedAt() { return createdAt; }
 }

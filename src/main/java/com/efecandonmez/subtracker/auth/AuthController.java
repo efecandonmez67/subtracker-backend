@@ -5,6 +5,8 @@ import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -27,8 +29,8 @@ public class AuthController {
 
     @PutMapping("/fcm-token")
     public void updateFcmToken(@Valid @RequestBody FcmTokenRequest request, Authentication authentication) {
-        String email = authentication.getName();
-        authService.updateFcmToken(email, request.fcmToken());
+        UUID userId = UUID.fromString(authentication.getName());
+        authService.updateFcmToken(userId, request.fcmToken());
     }
 
     @GetMapping("/me")
