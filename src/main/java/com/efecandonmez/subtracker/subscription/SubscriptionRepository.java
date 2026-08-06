@@ -8,4 +8,6 @@ import java.util.UUID;
 public interface SubscriptionRepository extends JpaRepository<Subscription, UUID> {
     List<Subscription> findByUserIdAndActiveTrue(UUID userId);
     List<Subscription> findByNextPaymentDateAndActiveTrue(LocalDate date);
+    List<Subscription> findByCurrencyAndActiveTrue(String currency);
+
 }

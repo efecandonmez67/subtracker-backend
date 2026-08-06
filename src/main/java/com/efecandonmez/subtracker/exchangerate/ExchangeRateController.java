@@ -24,6 +24,6 @@ public class ExchangeRateController {
 
     @PostMapping("/significant-changes")
     public List<ExchangeRate> significantChanges() {
-        return service.getSignificantChanges(BigDecimal.valueOf(1)); // %1 eşik, test için düşük
+        return service.getSignificantChanges(BigDecimal.valueOf(1));
     }
 }
