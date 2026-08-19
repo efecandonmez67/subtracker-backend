@@ -58,4 +58,11 @@ public class AuthService {
         long expiresAt = System.currentTimeMillis() + jwtService.getExpirationMs();
         return new AuthResponse(token, expiresAt);
     }
+
+    public void updateRateChangeThreshold(UUID userId, Double threshold) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Kullanıcı bulunamadı"));
+        user.setRateChangeThreshold(threshold);
+        userRepository.save(user);
+    }
 }

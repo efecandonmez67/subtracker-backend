@@ -30,6 +30,10 @@ public class User {
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
 
+    @Setter
+    @Column(nullable = false)
+    private Double rateChangeThreshold = 2.0;
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = Instant.now();

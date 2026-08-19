@@ -46,21 +46,22 @@ public class NotificationService {
     }
 
     public void notifySignificantRateChanges() {
-        List<ExchangeRate> changes = exchangeRateService.getSignificantChanges(BigDecimal.valueOf(2));
+        List<ExchangeRate> allRates = exchangeRateService.getAllRates();
 
-        for (ExchangeRate rate : changes) {
-            String direction = rate.percentChange().compareTo(BigDecimal.ZERO) > 0 ? "arttı" : "azaldı";
-            String body = rate.getBaseCurrency() + "/" + rate.getTargetCurrency() + " kuru %"
-                    + rate.percentChange().abs() + " " + direction + ". Bu para biriminden aboneliğiniz etkilenebilir.";
-
+        for (ExchangeRate rate : allRates) {
             List<Subscription> affected = subscriptionRepository.findByCurrencyAndActiveTrue(rate.getBaseCurrency());
 
             affected.stream()
                     .map(Subscription::getUserId)
                     .distinct()
-                    .forEach(userId -> userRepository.findById(userId).ifPresent(user ->
-                            fcmSender.send(user.getFcmToken(), "Döviz Kuru Değişimi", body)
-                    ));
+                    .forEach(userId -> userRepository.findById(userId).ifPresent(user -> {
+                        if (rate.percentChange().abs().doubleValue() >= user.getRateChangeThreshold()) {
+                            String direction = rate.percentChange().compareTo(java.math.BigDecimal.ZERO) > 0 ? "arttı" : "azaldı";
+                            String body = rate.getBaseCurrency() + "/" + rate.getTargetCurrency() + " kuru %"
+                                    + rate.percentChange().abs() + " " + direction + ". Bu para biriminden aboneliğiniz etkilenebilir.";
+                            fcmSender.send(user.getFcmToken(), "Döviz Kuru Değişimi", body);
+                        }
+                    }));
         }
     }
 }

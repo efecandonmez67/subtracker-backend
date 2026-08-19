@@ -33,8 +33,16 @@ public class AuthController {
         authService.updateFcmToken(userId, request.fcmToken());
     }
 
+    @PutMapping("/rate-threshold")
+    public void updateRateThreshold(@Valid @RequestBody ThresholdRequest request, Authentication authentication) {
+        UUID userId = UUID.fromString(authentication.getName());
+        authService.updateRateChangeThreshold(userId, request.threshold());
+    }
+
     @GetMapping("/me")
     public String me(Authentication authentication) {
         return authentication.getName();
     }
+
+
 }

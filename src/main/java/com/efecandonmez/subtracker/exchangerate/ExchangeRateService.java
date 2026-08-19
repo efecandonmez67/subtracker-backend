@@ -36,4 +36,8 @@ public class ExchangeRateService {
                 .filter(rate -> rate.percentChange().abs().compareTo(thresholdPercent) >= 0)
                 .toList();
     }
+
+    public List<ExchangeRate> getAllRates() {
+        return repository.findAll();
+    }
 }
